@@ -1,8 +1,15 @@
 footer > * {
-  color: rgb(69, 69, 69);
   font-size: .8em;
 }
 
 .legal {
-  color: black;
+  font-weight: bold;
+}
+
+@media (prefers-color-scheme: dark) {
+  .legal { color: white; }
+}
+
+@media (prefers-color-scheme: light) {
+  .legal { color: black; }
 }

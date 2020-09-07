@@ -2,8 +2,20 @@ button { border: none; }
 
 .primary {
   padding: 5px 15px;
-  border: 1px solid black;
+  margin: .5em;
   border-radius: 5em;
   background-color: transparent;
-  color: black;
+}
+
+@media (prefers-color-scheme: dark) {
+  .primary {
+    color: white;
+    border: 1px solid white;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  .primary {
+    border: 1px solid black;
+  }
 }
