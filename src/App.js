@@ -10,9 +10,7 @@ function App() {
   return (
     <div className="wrapper">
 
-      <header>
-        <CCLogo/>
-      </header>
+      <CCLogo/>
 
       {/* some kind of notification bar/box thing that people can click around on? */}
       <section>
