@@ -1,0 +1,58 @@
+* {
+  font: 18px/1.6 'Inter', sans-serif;
+}
+
+::selection {
+  color: #fafafa;
+  background: hotpink;
+}
+
+header img {
+  max-width: 40vh;
+}
+
+body {
+  height: 100vh;
+  font: 40px/1.6 'Inter', sans-serif;
+  background: #fafafa top/75% url("./assets/tilingLight.svg");
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  color: #222;
+  animation: fadein 0.75s ease-in-out;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #222 top/75% url("./assets/tilingDark.svg");
+    color: #f2f2f2;
+  }
+
+  a svg {
+    color: #f2f2f2;
+  }
+
+  a svg:visited {
+    color: #f2f2f2;
+  }
+
+  a svg:hover {
+    color: hotpink;
+  }
+
+}
+
+.blurb {
+  max-width: 60ch;
+  p {
+    font-weight: bold;
+  }
+  margin: 2em;
+}
+
+.wrapper {
+  max-width: 90vw;
+}
