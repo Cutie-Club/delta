@@ -1,9 +1,15 @@
 import React from "react";
-import './CCLogo.css';
+import styled from "styled-components";
+
+const LogoWrapper = styled.div`
+  svg {
+    max-width: 35vh;
+  }
+`;
 
 function CCLogo() {
   return (
-    <div className="cclogo">
+    <LogoWrapper>
     <svg
       clip-rule="evenodd"
       fill-rule="evenodd"
@@ -45,7 +51,7 @@ function CCLogo() {
         <path d="m180.04 228.62 41.033-25.061-39.732-23.435-1.301 48.496z"></path>
       </g>
     </svg>
-    </div>
+    </LogoWrapper>
   );
 }
 

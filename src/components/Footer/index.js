@@ -1,5 +1,7 @@
 import React from "react";
-import "./Footer.css";
+import styled from "styled-components";
+
+import Typography from "../../components/Typography";
 
 // social media link object
 const socialList = {
@@ -30,12 +32,14 @@ const socialList = {
   },
 };
 
+const FooterWrapper = styled.footer``;
+
 function Footer(props) {
   return (
-    <footer>
-      <p>connect with us on your favourite platform:</p>
+    <FooterWrapper>
+      <Typography size="small">connect with us on your favourite platform:</Typography>
 
-      <div className="social">
+      <>
         {Object.entries(socialList).map(([serviceName, service], index) => {
           return (
             <a href={service.href} key={index}>
@@ -43,11 +47,11 @@ function Footer(props) {
             </a>
           );
         })}
-      </div>
+      </>
       
-      <p>{props.text}</p>
-      <p className="legal">{`© ${new Date().getFullYear()} Cutie Club`}</p>
-    </footer>
+      <Typography >{props.text}</Typography>
+      <Typography bold size="small">{`© ${new Date().getFullYear()} Cutie Club`}</Typography>
+    </FooterWrapper>
   );
 }
 

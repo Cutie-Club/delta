@@ -1,5 +1,30 @@
 import React, { useState } from 'react';
-import './Notification.scss';
+
+import styled from 'styled-components';
+import theme from "styled-theming";
+import palette from "../../assets/theme.js"
+
+import Button from "../Button";
+
+const backgroundColour = theme("mode", palette.accentColour);
+
+const NotificationWrapper = styled.div`
+  display: flex;
+  align-items:center;
+  justify-content: space-between;
+  flex-direction: row wrap;
+
+  max-width: 75%;
+  margin: 1em auto;
+  background-color: ${backgroundColour};
+  border-radius: .5em;
+  padding: 0.5em 2em;
+`;
+
+const NotificationContent = styled.div`
+  display: inline-flex;
+  align-items: center;
+`;
 
 function Notification(props) {
   const [open, setOpen] = useState(true);
@@ -13,12 +38,11 @@ function Notification(props) {
     if (!externalControl) setOpen(false);
   }
 
-  console.log(props);
   return (
-    <div className="notification">
-      <div className="notification-content">{props.children}</div>
-      <button onClick={closeNotification}>Close</button>
-    </div>
+    <NotificationWrapper>
+      <NotificationContent>{props.children}</NotificationContent>
+      <Button onClick={closeNotification} text="Close" kind="link"/>
+    </NotificationWrapper>
   )
 }
 
