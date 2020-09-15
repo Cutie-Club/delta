@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.scss';
-import styled from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 
 // component imports
 import Button from './components/Button';
@@ -38,38 +38,47 @@ function App() {
 
   const [open, setOpen] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [theme, setTheme] = useState('light');
+
+  useEffect(() => {
+    if (window.matchMedia) {
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener("change", (event) => setTheme(event.matches ? "dark" : "light"));
+    }
+  }, []);
 
   return (
-    <OverflowWrap>
-      <AppWrapper>
+    <ThemeProvider theme={{ mode: theme }}>
+      <OverflowWrap>
+        <AppWrapper>
 
-      <MenuButton
-        text={(menuOpen === true) ? "Close" : "Menu"}
-        onClick={() => setMenuOpen(!menuOpen)}
-      />
+          <MenuButton
+            text={(menuOpen === true) ? "Close" : "Menu"}
+            onClick={() => setMenuOpen(!menuOpen)}
+          />
 
-      <CCLogo />
+          <CCLogo />
 
-      <section>
-        <Notification
-          open={open}
-          onClose={() => setOpen(false)}
-        >
-          <Typography>Our commissions are open!</Typography>
-        </Notification>
-      </section>
+          <section>
+            <Notification
+              open={open}
+              onClose={() => setOpen(false)}
+            >
+              <Typography>Our commissions are open!</Typography>
+            </Notification>
+          </section>
 
-      <section>
-        <Typography bold size="medium">We design and assemble custom electronics, enclosures, and mechanical keyboard parts. We can turn your ideas into working prototypes, and help you see them into production.</Typography>
-      </section>
+          <section>
+            <Typography bold size="medium">We design and assemble custom electronics, enclosures, and mechanical keyboard parts. We can turn your ideas into working prototypes, and help you see them into production.</Typography>
+          </section>
 
-      <Footer
-        text="Cutie Club is a collaborative project between Amber Holly and Callum Hart."
-      />
+          <Footer
+            text="Cutie Club is a collaborative project between Amber Holly and Callum Hart."
+          />
 
-      <Menu open={menuOpen}></Menu>
-      </AppWrapper>
-    </OverflowWrap>
+          <Menu open={menuOpen}></Menu>
+        </AppWrapper>
+      </OverflowWrap>
+    </ThemeProvider>
   );
 }
 
