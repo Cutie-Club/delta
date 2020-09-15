@@ -28,7 +28,7 @@ const Background = styled.div`
     )
   }}
 
-  transition: opacity .4s ease;
+  transition: all .4s ease;
 `
 
 const MenuBox = styled.div`
