@@ -3,25 +3,50 @@ import './App.scss';
 import styled from 'styled-components';
 
 // component imports
+import Button from './components/Button';
 import CCLogo from './components/CCLogo';
 import Footer from './components/Footer';
 import Notification from './components/Notification';
 import Typography from './components/Typography';
+import Menu from './components/Menu';
+
+
+// some browsers ignore overflow attributes on html and body tags
+const OverflowWrap = styled.div`
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+`;
 
 const AppWrapper = styled.div`
   max-width: 90vw;
   display: flex;
   flex-direction: column;
   text-align: center;
-  margin: auto;
+  margin: 0 auto;
+`;
+
+const MenuButton = styled(Button)`
+  z-index: 999;
+  position: fixed;
+  right: 0;
 `;
 
 function App() {
 
   const [open, setOpen] = useState(true);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <AppWrapper>
+    <OverflowWrap>
+      <AppWrapper>
+
+      <MenuButton
+        text={(menuOpen === true) ? "Close" : "Menu"}
+        onClick={() => setMenuOpen(!menuOpen)}
+      />
 
       <CCLogo />
 
@@ -41,7 +66,10 @@ function App() {
       <Footer
         text="Cutie Club is a collaborative project between Amber Holly and Callum Hart."
       />
-    </AppWrapper>
+
+      <Menu open={menuOpen}></Menu>
+      </AppWrapper>
+    </OverflowWrap>
   );
 }
 

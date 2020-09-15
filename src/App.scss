@@ -7,6 +7,10 @@
   background: hotpink;
 }
 
+body {
+  margin: 0 auto;
+}
+
 @media (prefers-color-scheme: dark) {
   body {
     background: #222 top/75% url("./assets/tilingDark.svg");

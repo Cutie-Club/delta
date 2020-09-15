@@ -32,6 +32,11 @@ const StyledButton = styled.button`
     border-color: ${hoverColour};
     color: white;
   }
+
+  :focus {
+    outline: none;
+    box-shadow: 0 0 0 3px hotpink;
+  }
 `
 
 function Button(props) {
