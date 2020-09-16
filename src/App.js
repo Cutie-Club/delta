@@ -24,7 +24,7 @@ const AppWrapper = styled.div`
   max-width: 80vw;
   display: flex;
   flex-direction: column;
-  margin: 0em 2em;
+  margin: 1em 2em;
 `;
 
 const MenuButton = styled.button`
@@ -70,6 +70,7 @@ function App() {
 
   useEffect(() => {
     if (window.matchMedia) {
+      if (window.matchMedia('(prefers-color-scheme: dark)').matches) setTheme("dark");
       window.matchMedia('(prefers-color-scheme: dark)').addEventListener("change", (event) => setTheme(event.matches ? "dark" : "light"));
     }
   }, []);
@@ -83,9 +84,7 @@ function App() {
             onClick={() => setMenuOpen(!menuOpen)}
             active={menuOpen}
           >
-
-            {menuOpen ? <BiX size="75%"/> : <BiMenu size="75%"/>}
-            
+            {menuOpen ? <BiX size="75%"/> : <BiMenu size="75%"/>} 
           </MenuButton>
 
           <CCLogo />
