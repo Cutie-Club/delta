@@ -5,8 +5,9 @@ import palette from '../../assets/theme.js';
 
 import Typography from '../Typography';
 
+import { BiMoney, BiEnvelope, BiMicrochip, BiStore } from 'react-icons/bi';
+
 const textColour = theme("mode", palette.primaryColour);
-const backgroundColour = theme("mode", palette.secondaryColour);
 
 const Background = styled.div`
   z-index: 10;
@@ -29,35 +30,45 @@ const Background = styled.div`
   }}
 
   transition: all .4s ease;
+  transition-property: opacity, visibility;
 `
 
 const MenuBox = styled.div`
   color: ${textColour};
-  background-color: ${backgroundColour};
-  height: ${window.screen.height}px;
-  width: 50vw;
   z-index: 50; // will display above everything else
   position: fixed;
-  
-  right: 0%; // controls it being hidden or not
+  right: 0%;
   display: flex;
-  align-items: baseline;
-  justify-content: space-around;
   flex-direction: column;
+  align-items: flex-end;
+  margin-right: 3em;
+  margin-bottom: 7em;
+
+  > * {
+    margin: .5em 0em;
+  }
 
   ${props => {
-    if (props.open) return (`right: 0%;`)
-    return (`right: -100%;`)
+    if (props.open) return (`bottom: 0%;`)
+    return (`bottom: -100%;`)
   }};
 
-  transition: right .4s ease;
+  transition: bottom .25s ease;
 `
 
-const Links = styled.div`
-  color: ${textColour};
-  height: 50%;
-  text-align: left;
-  margin: 2em;
+const MenuItem = styled.div`
+  background-color: white;
+  width: max-content;
+  padding: 0.25em .5em;
+  border-radius: .75em;
+  > * {
+    font-weight: 500;
+    margin: .25em;
+    color: black;
+  }
+  display: flex;
+  align-items: center;
+
 `
 
 function Menu(props) {
@@ -68,13 +79,30 @@ function Menu(props) {
       
       {/* close button */}
       {/* menu items */}
-      <Links>
+      {/* <Links>
         <Typography size="regular">Pricing</Typography>
         <Typography size="regular">Commissions</Typography>
         <Typography size="regular">Projects</Typography>
         <Typography size="regular">Contact</Typography>
-      </Links>
+      </Links> */}
       
+      <MenuItem>
+        <Typography>Pricing</Typography>
+        <BiMoney size="1.5em"/>
+      </MenuItem>
+      <MenuItem>
+        <Typography>Commissions</Typography>
+        <BiMicrochip size="1.5em"/>
+      </MenuItem>
+      <MenuItem>
+        <Typography>Our Work</Typography>
+        <BiStore size="1.5em"/>
+      </MenuItem>
+      <MenuItem>
+        <Typography>Contact</Typography>
+        <BiEnvelope size="1.5em"/>
+      </MenuItem>
+
       {/* social media buttons */}
       
     </MenuBox>

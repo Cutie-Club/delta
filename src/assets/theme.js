@@ -5,7 +5,7 @@ const theme = {
     },
     secondaryColour: {
       light: "#eee",
-      dark: "#444"
+      dark: "#222"
     },
     accentColour: {
       light: "lightseagreen",
@@ -13,12 +13,12 @@ const theme = {
     },
 
     buttonBackgroundColour: {
-      primary: {light: "hotpink", dark: ""},
-      secondary: {light: "transparent", dark: ""}
+      primary: {light: "hotpink", dark: "hotpink"},
+      secondary: {light: "transparent", dark: "#222"}
     },
     buttonBackgroundHoverColour: {
       primary: {light: "plum", dark: ""},
-      secondary: {light: "#444", dark: "#eee"}
+      secondary: {light: "#444", dark: "#999"}
     },
 
     textSize: {

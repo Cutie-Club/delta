@@ -1,5 +1,11 @@
+@import url('https://rsms.me/inter/inter.css');
+
 * {
-  font: 20px/1.6 'Inter', sans-serif;
+  font: 24px/1.6 'Inter', sans-serif; 
+}
+
+@supports (font-variation-settings: normal) {
+  html { font: 24px/1.6 'Inter', sans-serif; }
 }
 
 ::selection {
@@ -17,36 +23,12 @@ body {
     color: #f2f2f2;
   }
 
-  a svg {
-    color: #f2f2f2;
-  }
-
-  a svg:visited {
-    color: #f2f2f2;
-  }
-
-  a svg:hover {
-    color: hotpink;
-  }
-
 }
 
 @media (prefers-color-scheme: light) {
   body {
     background: #fafafa top/75% url("./assets/tilingLight.svg");
     color: #222;
-  }
-
-  a svg {
-    color: #f2f2f2;
-  }
-
-  a svg:visited {
-    color: #f2f2f2;
-  }
-
-  a svg:hover {
-    color: hotpink;
   }
 
 }
