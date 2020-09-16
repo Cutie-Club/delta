@@ -1,14 +1,20 @@
 import React, { useState, useEffect } from 'react';
+import {
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+
 import './App.scss';
 import styled, { ThemeProvider } from 'styled-components';
 
 // component imports
-import CCLogo from './components/CCLogo';
 import Footer from './components/Footer';
-import Notification from './components/Notification';
-import Typography from './components/Typography';
 import Menu from './components/Menu';
+import Typography from './components/Typography';
 
+// page imports
+import Home from './pages/Home';
 
 // some browsers ignore overflow attributes on html and body tags
 const OverflowWrap = styled.div`
@@ -28,7 +34,6 @@ const AppWrapper = styled.div`
 
 function App() {
 
-  const [open, setOpen] = useState(false);
   const [theme, setTheme] = useState('light');
 
   useEffect(() => {
@@ -42,26 +47,30 @@ function App() {
     <ThemeProvider theme={{ mode: theme }}>
       <OverflowWrap>
         <AppWrapper>
-          <CCLogo />
+          <Menu/>
 
-          <section>
-            <Notification
-              open={open}
-              onClose={() => setOpen(false)}
-            >
-              <Typography>Our commissions are open!</Typography>
-            </Notification>
-          </section>
-
-          <section>
-            <Typography bold size="medium">We design and assemble custom electronics, enclosures, and mechanical keyboard parts. We can turn your ideas into working prototypes, and help you see them into production.</Typography>
-          </section>
+          <Switch>
+            <Route path="/pricing">
+              <Typography bold>Hello, pricing will live here.</Typography>
+            </Route>
+            <Route path="/commissions">
+              <Typography bold>Hello, a commission form will live here.</Typography>
+            </Route>
+            <Route path="/our-work">
+              <Typography bold>Hello, our gallery of projects will live here.</Typography>
+            </Route>
+            <Route path="/contact">
+              <Typography bold>Hello, our contact details will live here.</Typography>
+            </Route>
+            <Route path="/">
+              <Home/>
+            </Route>
+          </Switch>
 
           <Footer
             text="Cutie Club is a collaborative project between Amber Holly and Callum Hart."
           />
-
-          <Menu />
+          
         </AppWrapper>
       </OverflowWrap>
     </ThemeProvider>

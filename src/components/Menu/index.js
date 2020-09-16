@@ -65,7 +65,6 @@ const MenuButton = styled.button`
     vertical-align: middle;
     text-align: center;
   }
-  
 `;
 
 
@@ -119,7 +118,8 @@ function Menu() {
         {menuOpen ? <BiX size="75%" /> : <BiMenu size="75%" />}
       </MenuButton>
 
-      <Background open={menuOpen}></Background>
+      <Background open={menuOpen}/>
+      
       <MenuBox open={menuOpen}>
         <MenuItem>
           <Typography>Pricing</Typography>
@@ -137,7 +137,6 @@ function Menu() {
           <Typography>Contact</Typography>
           <BiEnvelope size="1.5em" />
         </MenuItem>
-
       </MenuBox>
     </>
   )
