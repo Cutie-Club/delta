@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import theme from 'styled-theming';
 import palette from '../../assets/theme.js';
 
 import Typography from '../Typography';
 
-import { BiMoney, BiEnvelope, BiMicrochip, BiStore } from 'react-icons/bi';
+import { BiMenu, BiX, BiMoney, BiEnvelope, BiMicrochip, BiStore } from 'react-icons/bi';
 
 const textColour = theme("mode", palette.primaryColour);
 
@@ -33,6 +33,42 @@ const Background = styled.div`
   transition-property: opacity, visibility;
 `
 
+const MenuButton = styled.button`
+  z-index: 999;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  margin: 3em;
+  width: 3em;
+  height: 3em;
+  border-radius: 50%;
+  border: none;
+  text-align: center;
+
+  ${props => {
+    if (props.active) return (
+      `background-color: white;
+      color: black;`
+    )
+    return (
+      `background-color: black;
+      color: white;`
+    )
+  }}
+
+  :focus {
+    outline: none;
+    box-shadow: 0 0 0 3px hotpink;
+  }
+
+  > * {
+    vertical-align: middle;
+    text-align: center;
+  }
+  
+`;
+
+
 const MenuBox = styled.div`
   color: ${textColour};
   z-index: 50; // will display above everything else
@@ -54,7 +90,7 @@ const MenuBox = styled.div`
   }};
 
   transition: bottom .25s ease;
-`
+`;
 
 const MenuItem = styled.div`
   background-color: white;
@@ -69,44 +105,41 @@ const MenuItem = styled.div`
   display: flex;
   align-items: center;
 
-`
+`;
 
-function Menu(props) {
+function Menu() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
-  <>
-    <Background open={props.open}></Background>
-    <MenuBox open={props.open}>
-      
-      {/* close button */}
-      {/* menu items */}
-      {/* <Links>
-        <Typography size="regular">Pricing</Typography>
-        <Typography size="regular">Commissions</Typography>
-        <Typography size="regular">Projects</Typography>
-        <Typography size="regular">Contact</Typography>
-      </Links> */}
-      
-      <MenuItem>
-        <Typography>Pricing</Typography>
-        <BiMoney size="1.5em"/>
-      </MenuItem>
-      <MenuItem>
-        <Typography>Commissions</Typography>
-        <BiMicrochip size="1.5em"/>
-      </MenuItem>
-      <MenuItem>
-        <Typography>Our Work</Typography>
-        <BiStore size="1.5em"/>
-      </MenuItem>
-      <MenuItem>
-        <Typography>Contact</Typography>
-        <BiEnvelope size="1.5em"/>
-      </MenuItem>
+    <>
+      <MenuButton
+        onClick={() => setMenuOpen(!menuOpen)}
+        active={menuOpen}
+      >
+        {menuOpen ? <BiX size="75%" /> : <BiMenu size="75%" />}
+      </MenuButton>
 
-      {/* social media buttons */}
-      
-    </MenuBox>
-  </>
+      <Background open={menuOpen}></Background>
+      <MenuBox open={menuOpen}>
+        <MenuItem>
+          <Typography>Pricing</Typography>
+          <BiMoney size="1.5em" />
+        </MenuItem>
+        <MenuItem>
+          <Typography>Commissions</Typography>
+          <BiMicrochip size="1.5em" />
+        </MenuItem>
+        <MenuItem>
+          <Typography>Our Work</Typography>
+          <BiStore size="1.5em" />
+        </MenuItem>
+        <MenuItem>
+          <Typography>Contact</Typography>
+          <BiEnvelope size="1.5em" />
+        </MenuItem>
+
+      </MenuBox>
+    </>
   )
 }
 

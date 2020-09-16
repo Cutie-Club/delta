@@ -9,7 +9,6 @@ import Notification from './components/Notification';
 import Typography from './components/Typography';
 import Menu from './components/Menu';
 
-import { BiMenu, BiX } from 'react-icons/bi';
 
 // some browsers ignore overflow attributes on html and body tags
 const OverflowWrap = styled.div`
@@ -27,45 +26,9 @@ const AppWrapper = styled.div`
   margin: 1em 2em;
 `;
 
-const MenuButton = styled.button`
-  z-index: 999;
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  margin: 3em;
-  width: 3em;
-  height: 3em;
-  border-radius: 50%;
-  border: none;
-  text-align: center;
-
-  ${props => {
-    if (props.active) return (
-      `background-color: white;
-      color: black;`
-    )
-    return (
-      `background-color: black;
-      color: white;`
-    )
-  }}
-
-  :focus {
-    outline: none;
-    box-shadow: 0 0 0 3px hotpink;
-  }
-
-  > * {
-    vertical-align: middle;
-    text-align: center;
-  }
-  
-`;
-
 function App() {
 
   const [open, setOpen] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
   const [theme, setTheme] = useState('light');
 
   useEffect(() => {
@@ -79,14 +42,6 @@ function App() {
     <ThemeProvider theme={{ mode: theme }}>
       <OverflowWrap>
         <AppWrapper>
-
-          <MenuButton
-            onClick={() => setMenuOpen(!menuOpen)}
-            active={menuOpen}
-          >
-            {menuOpen ? <BiX size="75%"/> : <BiMenu size="75%"/>} 
-          </MenuButton>
-
           <CCLogo />
 
           <section>
@@ -106,7 +61,7 @@ function App() {
             text="Cutie Club is a collaborative project between Amber Holly and Callum Hart."
           />
 
-          <Menu open={menuOpen}></Menu>
+          <Menu />
         </AppWrapper>
       </OverflowWrap>
     </ThemeProvider>

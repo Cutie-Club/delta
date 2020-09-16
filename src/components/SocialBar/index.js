@@ -18,16 +18,16 @@ const SocialIcons = styled.div`
   svg:hover { color: hotpink; }
 `;
 
-function SocialBar () {
-   return <SocialIcons>
-        {Object.entries(socialLinks).map(([serviceName, service], index) => {
-          return (
-            <a href={service.href} key={index}>
-              <service.svg size="2em"/>
-            </a>
-          );
-        })}
-      </SocialIcons>
+function SocialBar() {
+  return <SocialIcons>
+    {Object.entries(socialLinks).map(([serviceName, service], index) => {
+      return (
+        <a href={service.href} key={index}>
+          <service.svg size="2em" />
+        </a>
+      );
+    })}
+  </SocialIcons>
 }
 
 export default SocialBar;
