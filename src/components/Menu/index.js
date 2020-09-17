@@ -6,7 +6,9 @@ import { Link } from 'wouter';
 import palette from '../../assets/theme.js';
 import Typography from '../Typography';
 
-import { BiMenu, BiX, BiMoney, BiEnvelope, BiMicrochip, BiStore } from 'react-icons/bi';
+import { BiX, BiMenu } from 'react-icons/bi';
+
+import pages from '../../pages';
 
 const textColour = theme("mode", palette.primaryColour);
 
@@ -101,6 +103,7 @@ const MenuItem = styled.div`
     font-weight: 500;
     margin: .25em;
     color: black;
+    cursor: pointer;
   }
   display: flex;
   align-items: center;
@@ -118,25 +121,20 @@ function Menu() {
         {menuOpen ? <BiX size="75%" /> : <BiMenu size="75%" />}
       </MenuButton>
 
-      <Background open={menuOpen}/>
+      <Background open={menuOpen} onClick={() => setMenuOpen(false)}/>
       
       <MenuBox open={menuOpen}>
-        <MenuItem>
-          <Typography>Pricing</Typography>
-          <BiMoney size="1.5em" />
-        </MenuItem>
-        <MenuItem>
-          <Typography>Commissions</Typography>
-          <BiMicrochip size="1.5em" />
-        </MenuItem>
-        <MenuItem>
-          <Typography>Our Work</Typography>
-          <BiStore size="1.5em" />
-        </MenuItem>
-        <MenuItem>
-          <Typography>Contact</Typography>
-          <BiEnvelope size="1.5em" />
-        </MenuItem>
+        {pages.map((page, index) => {
+          if (!page.hidden) return (            
+            <Link href={page.route} onClick={() => setMenuOpen(false)} key={index}>
+              <MenuItem>
+                <Typography>{page.name}</Typography>
+                <page.icon size="1.5em" />
+              </MenuItem>
+            </Link>
+          )
+          return undefined;
+        })}
       </MenuBox>
     </>
   )

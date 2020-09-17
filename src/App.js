@@ -27,7 +27,7 @@ const AppWrapper = styled.div`
   max-width: 80vw;
   display: flex;
   flex-direction: column;
-  margin: 1em 2em;
+  margin: 1em 2em 0 2em;
 `;
 
 function App() {
@@ -48,8 +48,8 @@ function App() {
           <Menu />
 
           <Switch>
-            {pages.map(page => (
-              <Route path={page.route}>
+            {pages.map((page, index) => (
+              <Route path={page.route} key={index}>
                 {page.component}
               </Route>
             ))}

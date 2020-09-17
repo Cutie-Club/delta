@@ -5,7 +5,7 @@ function Home(props) {
   return (
     <>
       <section>
-        <Typography bold size="medium">Pricing</Typography>
+        <Typography bold size="medium">Gallery goes here</Typography>
       </section>
     </>
   )

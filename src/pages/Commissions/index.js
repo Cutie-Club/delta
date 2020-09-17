@@ -1,14 +1,14 @@
 import React from 'react';
 import Typography from '../../components/Typography';
 
-function Home(props) {
+function Commissions(props) {
   return (
     <>
       <section>
-        <Typography bold size="medium">Pricing</Typography>
+        <Typography bold size="medium">Commissions</Typography>
       </section>
     </>
   )
 };
 
-export default Home;
+export default Commissions;

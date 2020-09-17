@@ -1,10 +1,11 @@
-import React from 'react';
 import { BiMoney, BiEnvelope, BiMicrochip, BiPhotoAlbum } from 'react-icons/bi';
-import Typography from '../components/Typography';
 
 import Home from "./Home";
 import Pricing from "./Pricing";
 import Error from "./Error";
+import Commissions from './Commissions';
+import OurWork from './OurWork';
+import Contact from './Contact';
 
 const pages = [
   {
@@ -21,19 +22,19 @@ const pages = [
   {
     name: "Commissions",
     route: "/commissions",
-    component: <Typography>Commish bish</Typography>,
+    component: Commissions,
     icon: BiMicrochip
   },
   {
     name: "Our Work",
     route: "/our-work",
-    component: <Typography>Gallery hoes</Typography>,
+    component: OurWork,
     icon: BiPhotoAlbum
   },
   {
     name: "Contact",
     route: "/contact",
-    component: <Typography>Ring ring sexy</Typography>,
+    component: Contact,
     icon: BiEnvelope
   },
   {
