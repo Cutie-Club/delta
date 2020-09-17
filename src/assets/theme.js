@@ -22,9 +22,10 @@ const theme = {
     },
 
     textSize: {
-      small: "0.8em",
+      xsmall: "0.5em",
+      small: "0.em",
       regular: "1em",
-      medium: "1.25em",
+      medium: "1.5em",
       large: "2em",
       xlarge: "4em"
     }

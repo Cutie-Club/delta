@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import theme from 'styled-theming';
-import palette from '../../assets/theme.js';
+import { Link } from 'wouter';
 
+import palette from '../../assets/theme.js';
 import Typography from '../Typography';
 
 import { BiMenu, BiX, BiMoney, BiEnvelope, BiMicrochip, BiStore } from 'react-icons/bi';
@@ -103,7 +104,6 @@ const MenuItem = styled.div`
   }
   display: flex;
   align-items: center;
-
 `;
 
 function Menu() {
