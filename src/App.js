@@ -8,6 +8,7 @@ import './App.scss';
 import styled, { ThemeProvider } from 'styled-components';
 
 // component imports
+import CCLogo from './components/CCLogo';
 import Footer from './components/Footer';
 import Menu from './components/Menu';
 
@@ -19,15 +20,15 @@ const OverflowWrap = styled.div`
   position: relative;
   overflow: hidden;
   min-height: ${window.innerHeight}px;
-  margin: 0;
+  margin: 0 auto;
   padding: 0;
 `;
 
 const AppWrapper = styled.div`
-  max-width: 80vw;
+  max-width: 90vw;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
-  margin: 1em 2em 0 2em;
 `;
 
 function App() {
@@ -45,6 +46,7 @@ function App() {
     <ThemeProvider theme={{ mode: theme }}>
       <OverflowWrap>
         <AppWrapper>
+          <CCLogo />
           <Menu />
 
           <Switch>

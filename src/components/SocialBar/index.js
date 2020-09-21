@@ -7,15 +7,16 @@ import palette from '../../assets/theme.js';
 import socialLinks from './socialLinks.js';
 
 const textColour = theme("mode", palette.primaryColour);
+const accentColour = theme("mode", palette.accentColour);
+
 
 const SocialIcons = styled.div`
   svg {
     margin: .25em .5em;
     color: ${textColour};
-    transition: color .2s ease;
+    transition: color ${palette.animationTime.short} ease;
   }
-
-  svg:hover { color: hotpink; }
+  svg:hover { color: ${accentColour}; }
 `;
 
 function SocialBar() {

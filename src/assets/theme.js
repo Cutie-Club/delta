@@ -8,8 +8,8 @@ const theme = {
       dark: "#222"
     },
     accentColour: {
-      light: "lightseagreen",
-      dark: ""
+      light: "hotpink",
+      dark: "orchid"
     },
 
     buttonBackgroundColour: {
@@ -23,11 +23,17 @@ const theme = {
 
     textSize: {
       xsmall: "0.5em",
-      small: "0.em",
+      small: "0.75em",
       regular: "1em",
       medium: "1.5em",
       large: "2em",
       xlarge: "4em"
+    },
+    
+    animationTime: {
+      short: "0.2s",
+      medium: "0.4s",
+      long: "0.6s",
     }
 }
 

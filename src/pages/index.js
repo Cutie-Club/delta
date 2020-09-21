@@ -4,7 +4,7 @@ import Home from "./Home";
 import Pricing from "./Pricing";
 import Error from "./Error";
 import Commissions from './Commissions';
-import OurWork from './OurWork';
+import Portfolio from './Portfolio';
 import Contact from './Contact';
 
 const pages = [
@@ -26,9 +26,9 @@ const pages = [
     icon: BiMicrochip
   },
   {
-    name: "Our Work",
-    route: "/our-work",
-    component: OurWork,
+    name: "Portfolio",
+    route: "/portfolio",
+    component: Portfolio,
     icon: BiPhotoAlbum
   },
   {

@@ -70,7 +70,6 @@ const MenuButton = styled.button`
   }
 `;
 
-
 const MenuBox = styled.div`
   color: ${textColour};
   z-index: 50; // will display above everything else
@@ -87,11 +86,15 @@ const MenuBox = styled.div`
   }
 
   ${props => {
-    if (props.open) return (`bottom: 0%;`)
-    return (`bottom: -100%;`)
+    if (props.open) return (
+      `bottom: 0%;
+      visibility: visible;`
+    )
+    return (`bottom: -100%; visibility: hidden;`)
   }};
 
-  transition: bottom .25s ease;
+  transition: all .25s ease;
+  transition-property: bottom, visibility;
 `;
 
 const MenuItem = styled.div`
