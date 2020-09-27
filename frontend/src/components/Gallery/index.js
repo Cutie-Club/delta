@@ -2,6 +2,10 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 import Typography from '../Typography';
 
+const GalleryWrapper = styled.div`
+  max-width: 60em;
+`;
+
 const GalleryItem = styled.div`
   display: flex;
   margin-bottom: 2em;
@@ -9,7 +13,7 @@ const GalleryItem = styled.div`
 
 const Description = styled.div`
   width: 50%;
-  margin: 1em;
+  margin: 1em 1.25em;
   > p { margin: 0; }
   > p:not(:first-child) { margin: 0.25em; }
   ${props => (props.index % 2) && css`text-align: right;`}
@@ -24,7 +28,7 @@ const GalleryImage = styled.img`
 
 function Gallery(props) {
   return (
-    <>
+    <GalleryWrapper>
       {props.data.map((item, index) => {
         const image = <GalleryImage src={item.image} alt={item.alt} />;
         const description = <Description index={index}>
@@ -38,7 +42,7 @@ function Gallery(props) {
           </GalleryItem>
         )
       })}
-    </>
+    </GalleryWrapper>
   );
 }
 

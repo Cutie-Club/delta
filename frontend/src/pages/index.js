@@ -1,7 +1,6 @@
-import { BiMoney, BiEnvelope, BiMicrochip, BiPhotoAlbum } from 'react-icons/bi';
+import { BiEnvelope, BiMicrochip, BiPhotoAlbum } from 'react-icons/bi';
 
 import Home from "./Home";
-import Pricing from "./Pricing";
 import Error from "./Error";
 import Commissions from './Commissions';
 import Portfolio from './Portfolio';
@@ -12,12 +11,6 @@ const pages = [
     route: "/",
     hidden: true,
     component: Home
-  },
-  {
-    name: "Pricing",
-    route: "/pricing",
-    component: Pricing,
-    icon: BiMoney
   },
   {
     name: "Commissions",
