@@ -2,6 +2,7 @@ import React from "react";
 import { rest } from "msw";
 import { setupServer } from "msw/node";
 import {
+  screen,
   render,
   waitFor,
   waitForElementToBeRemoved,
@@ -14,143 +15,105 @@ const server = setupServer(
 );
 
 beforeAll(() => server.listen());
+
+beforeEach(() => {
+  render(
+    <Form method="POST" action="/commissions">
+      <input type="text"></input>
+      <button>Submit</button>
+    </Form>
+  );
+});
+
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
-test("renders child props", () => {
-  const { getByRole } = render(
-    <Form>
-      <input type="text"></input>
-      <button>Submit</button>
-    </Form>
-  );
-  const formInput = getByRole("textbox");
-  const formButton = getByRole("button");
-  expect(formInput).toBeInTheDocument();
-  expect(formButton).toBeInTheDocument();
+describe("smoke tests", () => {
+  test("renders child props", () => {
+    expect(screen.getByRole("textbox")).toBeInTheDocument();
+    expect(screen.getByRole("button")).toBeInTheDocument();
+  });
 });
 
-test("displays successful response", async () => {
-  const { getByText, getByRole } = render(
-    <Form method="POST" action="/commissions">
-      <input type="text"></input>
-      <button>Submit</button>
-    </Form>
-  );
+describe("tests in a successful state", () => {
+  test("displays successful response", async () => {
+    userEvent.type(screen.getByRole("textbox"), "My Cool Name");
+    userEvent.click(screen.getByText("Submit"));
 
-  userEvent.type(getByRole("textbox"), "My Cool Name");
-  userEvent.click(getByText("Submit"));
+    await waitFor(() => expect(screen.getByText("Form submitted")).toBeInTheDocument());
+  });
 
-  await waitFor(() => expect(getByText("Form submitted")).toBeInTheDocument());
+  test("hides the form on submit", async () => {  
+    const inputTextbox = screen.getByRole("textbox");
+    const submitButton = screen.getByText("Submit");
+  
+    userEvent.type(inputTextbox, "My Cool Name");
+    userEvent.click(submitButton);
+  
+    await waitForElementToBeRemoved(() => screen.queryByRole("textbox"));
+  
+    expect(inputTextbox).not.toBeInTheDocument();
+    expect(submitButton).not.toBeInTheDocument();
+  });
+
+  test("does not display a reset button after a successful submission", async () => {
+    const inputTextbox = screen.getByRole("textbox");
+    const submitButton = screen.getByText("Submit");
+  
+    userEvent.type(inputTextbox, "My Cool Name");
+    userEvent.click(submitButton);
+  
+    await screen.findByText("Form submitted");
+    const resetButton = screen.queryByText("Reset");
+  
+    expect(resetButton).not.toBeInTheDocument();
+  });
 });
 
-test("displays an error when status is not 200", async () => {
-  server.use(
-    rest.post("/commissions", (req, res, ctx) => res(ctx.status(500)))
-  );
+describe("tests in a failure state", () => {
+  beforeEach(() => {
+    server.use(
+      rest.post("/commissions", (req, res, ctx) => res(ctx.status(500)))
+    );
+  })
 
-  const { getByText, getByRole } = render(
-    <Form method="POST" action="/commissions">
-      <input type="text"></input>
-      <button>Submit</button>
-    </Form>
-  );
+  test("displays an error when status is not 200", async () => {  
+    userEvent.type(screen.getByRole("textbox"), "My Cool Name");
+    userEvent.click(screen.getByText("Submit"));
+  
+    await waitFor(() =>
+      expect(screen.getByText("Form did not submit")).toBeInTheDocument()
+    );
+  });
 
-  userEvent.type(getByRole("textbox"), "My Cool Name");
-  userEvent.click(getByText("Submit"));
+  test("displays a reset button after an error", async () => {
+    const inputTextbox = screen.getByRole("textbox");
+    const submitButton = screen.getByText("Submit");
+  
+    userEvent.type(inputTextbox, "My Cool Name");
+    userEvent.click(submitButton);
+  
+    const resetButton = await screen.findByText("Reset");
+  
+    expect(resetButton).toBeInTheDocument();
+  });
 
-  await waitFor(() =>
-    expect(getByText("Form did not submit")).toBeInTheDocument()
-  );
-});
-
-test("hides the form on submit", async () => {
-  const { getByText, getByRole, queryByRole } = render(
-    <Form method="POST" action="/commissions">
-      <input type="text"></input>
-      <button>Submit</button>
-    </Form>
-  );
-
-  const inputTextbox = getByRole("textbox");
-  const submitButton = getByText("Submit");
-
-  userEvent.type(inputTextbox, "My Cool Name");
-  userEvent.click(submitButton);
-
-  await waitForElementToBeRemoved(() => queryByRole("textbox"));
-
-  expect(inputTextbox).not.toBeInTheDocument();
-  expect(submitButton).not.toBeInTheDocument();
-});
-
-test("displays a reset button after an error", async () => {
-  server.use(
-    rest.post("/commissions", (req, res, ctx) => res(ctx.status(500)))
-  );
-
-  const { getByText, getByRole, findByText } = render(
-    <Form method="POST" action="/commissions">
-      <input type="text"></input>
-      <button>Submit</button>
-    </Form>
-  );
-
-  const inputTextbox = getByRole("textbox");
-  const submitButton = getByText("Submit");
-
-  userEvent.type(inputTextbox, "My Cool Name");
-  userEvent.click(submitButton);
-
-  const resetButton = await findByText("Reset");
-
-  expect(resetButton).toBeInTheDocument();
-});
-
-test("does not display a reset button after a successful submission", async () => {
-  const { getByText, getByRole, queryByText } = render(
-    <Form method="POST" action="/commissions">
-      <input type="text"></input>
-      <button>Submit</button>
-    </Form>
-  );
-
-  const inputTextbox = getByRole("textbox");
-  const submitButton = getByText("Submit");
-
-  userEvent.type(inputTextbox, "My Cool Name");
-  userEvent.click(submitButton);
-
-  const resetButton = await queryByText("Reset");
-
-  expect(resetButton).not.toBeInTheDocument();
-});
-
-test("returns the form to initial state when reset button pressed", async () => {
-  server.use(
-    rest.post("/commissions", (req, res, ctx) => res(ctx.status(500)))
-  );
-
-  const { getByText, getByRole, findByText, findByRole } = render(
-    <Form method="POST" action="/commissions">
-      <input type="text"></input>
-      <button>Submit</button>
-    </Form>
-  );
-
-  let inputTextbox = getByRole("textbox");
-  let submitButton = getByText("Submit");
-
-  userEvent.type(inputTextbox, "My Cool Name");
-  userEvent.click(submitButton);
-
-  const resetButton = await findByText("Reset");
-
-  userEvent.click(resetButton);
-
-  inputTextbox = await findByRole("textbox");
-  submitButton = await findByText("Submit");
-  expect(inputTextbox).toBeInTheDocument();
-  expect(submitButton).toBeInTheDocument();
-  expect(resetButton).not.toBeInTheDocument();
-});
+  test("returns the form to initial state when reset button pressed", async () => {  
+    let inputTextbox = screen.getByRole("textbox");
+    let submitButton = screen.getByText("Submit");
+  
+    userEvent.type(inputTextbox, "My Cool Name");
+    userEvent.click(submitButton);
+  
+    const resetButton = await screen.findByText("Reset");
+  
+    userEvent.click(resetButton);
+  
+    inputTextbox = await screen.findByRole("textbox");
+    submitButton = await screen.findByText("Submit");
+    
+    expect(inputTextbox).toBeInTheDocument();
+    expect(submitButton).toBeInTheDocument();
+    expect(resetButton).not.toBeInTheDocument();
+  });
+})
