@@ -14,6 +14,8 @@ const submissionHandler = (event, action, method, setFormSubmitted) => {
   }).then((res) => {
     if (res.status === 200) return setFormSubmitted("success");
     setFormSubmitted("failure");
+  }).catch(() => {
+    setFormSubmitted("failure");
   });
 };
 
