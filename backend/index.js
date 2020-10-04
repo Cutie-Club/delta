@@ -1,7 +1,7 @@
 const express = require("express");
 const multer = require("multer");
 const cors = require("cors");
-const mailer = require("./mailer.js");
+const mailer = require("./mailer");
 
 const upload = multer();
 const app = express();
@@ -20,7 +20,7 @@ app.post("/commissions", upload.none(), (req, res) => {
   mailer.sendEmail(req.body).then(() => {
     res.status(200).end();
   }).catch(() => {
-    return res.status(400).end();
+    res.status(400).end();
   });
 });
 

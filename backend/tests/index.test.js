@@ -2,6 +2,11 @@ const request = require('supertest');
 const express = require('express');
 const { app, server } = require('../index.js');
 
+const mailer = require("../mailer");
+jest.mock("../mailer");
+mailer.sendEmail.mockResolvedValue();
+afterEach(() => mailer.sendEmail.mockClear());
+
 afterAll(() => server.close());
 
 test("returns 200 OK, \"Hello World\" on /test", (done) => {
@@ -12,11 +17,6 @@ test("returns 200 OK, \"Hello World\" on /test", (done) => {
 });
 
 describe("tests on /commissions route", () => {
-
-  const mailer = require("../mailer.js");
-  jest.spyOn(mailer, "sendEmail");
-  afterEach(() => mailer.sendEmail.mockClear());
-
   test("returns 400 Bad Request when no data is received", (done) => {
     request(app)
       .post('/commissions')
