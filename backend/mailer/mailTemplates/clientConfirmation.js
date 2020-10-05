@@ -8,7 +8,7 @@ module.exports = (data) => `
 
         <mj-divider border-color="#F45E43"></mj-divider>
 
-        <mj-text font-size="20px" color="#F45E43" font-family="helvetica">Hello ${data.name}</mj-text>
+        <mj-text font-size="20px" color="#F45E43" font-family="helvetica">Hello ${data.name || "you"}!</mj-text>
 
       </mj-column>
     </mj-section>
