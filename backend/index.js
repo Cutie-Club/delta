@@ -1,7 +1,9 @@
 const express = require("express");
 const multer = require("multer");
 const cors = require("cors");
-const mailer = require("./mailer");
+const { translateEmail, sendEmail } = require("./mailer");
+const clientConfirmation = require("./mailer/mailTemplates/clientConfirmation");
+const internalConfirmation = require("./mailer/mailTemplates/internalConfirmation");
 
 const upload = multer();
 const app = express();
@@ -17,11 +19,25 @@ app.get("/test", (req, res) => {
 app.post("/commissions", upload.none(), (req, res) => {
   if (!req.body) return res.status(400).end();
 
-  mailer.sendEmail(req.body).then(() => {
-    res.status(200).end();
-  }).catch(() => {
-    res.status(400).end();
-  });
+  // sanitise form data
+
+  try {
+    // build internal commission email
+    const internalEmail = translateEmail(internalConfirmation(req.body));
+    // build client confirmation email
+    const clientEmail = translateEmail(clientConfirmation(req.body));
+
+    sendEmail(internalEmail).then(() => {
+      sendEmail(clientEmail).then(() => {
+        res.status(200).end();
+      });
+    }).catch(() => {
+      res.status(500).end();
+    });
+
+  } catch {
+    res.status(500).end();
+  }
 });
 
 const server = app.listen(port, () => {

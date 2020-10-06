@@ -34,14 +34,14 @@ describe("tests on /commissions route", () => {
       .end(done)
   });
 
-  test("calls email sender when form data received", (done) => {
+  test("calls email sender twice when form data received", (done) => {
     request(app)
       .post('/commissions')
       .field("name", "Oscar")
       .field("mail", "meow@cats.com")
       .field("message", "meow")
       .expect(200)
-      .expect(() => expect(mailer.sendEmail).toHaveBeenCalledTimes(1))
+      .expect(() => expect(mailer.sendEmail).toHaveBeenCalledTimes(2))
       .end(done)
   });
 
@@ -52,7 +52,7 @@ describe("tests on /commissions route", () => {
       setTimeout(() => {
         emailSent = true;
         resolve();
-      }, 2000);
+      }, 1000);
     }));
 
     request(app)
