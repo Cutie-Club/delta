@@ -24,6 +24,7 @@ module.exports = (data) => {
     text: textTemplate(data),
     subject: `${data.name || "Hey"}, we got your message!`,
     to: data.email,
-    from: `enquiries@cutieclub.cc`
+    from: `enquiries@cutieclub.cc`,
+    nonRequiredField: "test"
   };
 }

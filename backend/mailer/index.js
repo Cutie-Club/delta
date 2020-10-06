@@ -1,4 +1,5 @@
 const nodemailer = require("nodemailer");
+const mjmlTranslator = require('./mjmlTranslator')
 
 let transporter = undefined;
 
@@ -24,5 +25,12 @@ module.exports = {
     let info = await transporter.sendMail(email);
   },
 
-  buildEmail: () => {}
+  translateEmail: (mjmlEmail) => {
+    let translatedEmail = { ...mjmlEmail };
+
+    translatedEmail.html = mjmlTranslator(mjmlEmail.mjml);
+    delete translatedEmail.mjml;
+
+    return translatedEmail;
+  }
 }

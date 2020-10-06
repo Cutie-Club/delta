@@ -1,5 +1,8 @@
 const nodemailer = require('nodemailer');
-const { sendEmail, buildEmail } = require('../');
+const fs = require('fs');
+const path = require('path');
+const mailer = require('../');
+const { sendEmail, translateEmail } = require('../');
 
 jest.mock("nodemailer");
 
@@ -40,31 +43,54 @@ describe("sendEmail", () => {
   })
 });
 
-describe("buildEmail", () => {
-  const formData = {
-    name: "A Name",
-    email: "someone@domain.tld",
-    message: "hello i want a commission ta"
-  }
+const requiredFields = ['to', 'from', 'subject', 'text', 'html'];
+const formData = {
+  name: "Oscar",
+  email: "noisy@meow.com",
+  message: "MEOW MEOW MEOW!"
+}
 
-  const email = {
-    to: "A Name <someone@domain.tld>",
-    from: "enquiries@cutieclub.cc",
-    subject: "Test Email",
-    html: "<h1>Thanks for contacting us!</h1>",
-    text: "We just got your message."
-  }
+describe("translateEmail", () => {
+  //inputs: mjmlEmail
+  //output: htmlEmail
+  const mjmlEmail = require("./testTemplate")(formData);
+  const htmlEmail = translateEmail(mjmlEmail);
 
-  test("builds a confirmation email object from formData", () => {
-    expect(buildEmail(formData)).toStrictEqual(email)
+  test("results in an email object with the minimum required fields", () => {
+    expect(htmlEmail).toContainKeys(requiredFields);
+  });
+
+  test("returns all non-mjml fields without transformation", () => {
+    const clonedMJMLemail = { ...mjmlEmail };
+    delete clonedMJMLemail.mjml;
+    expect(htmlEmail).toMatchObject(clonedMJMLemail);
+  });
+
+  test("returns an object that does not contain an mjml field", () => {
+    expect(htmlEmail).not.toContainKey('mjml');
+  });
+
+  test("does not mutate the given object", () => {
+    const objectToTest = require("./testTemplate")(formData);
+    const clonedObjectToTest = {...objectToTest};
+    translateEmail(objectToTest);
+    expect(objectToTest).toStrictEqual(clonedObjectToTest);
   })
-})
+});
 
-// create some sort of email builder
+describe("templates: does", () => {
+  const mailTemplatesPath = `${__dirname}/../mailTemplates`;
+  const mailTemplates = fs.readdirSync(mailTemplatesPath);
 
-// form is submitted
-// form data is sent to backend
-// backend sanitises formdata
-// formdata is converted into 2 email objects
-// a confirmation email is sent to form filler
-// the form body email is sent internally
+  for (const templateName of mailTemplates) {
+    const template = require(`${mailTemplatesPath}/${templateName}`);
+    const templateResult = translateEmail(template(formData));
+
+    requiredFields.forEach((field) => {
+      test(`${templateName} have '${field}' field`, () => {
+        expect(templateResult[field]).toBeDefined();
+        expect(templateResult[field]).not.toBeEmpty();
+      });
+    })
+  }
+});

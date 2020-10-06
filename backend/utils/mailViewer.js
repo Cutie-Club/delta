@@ -25,16 +25,15 @@ const injectLiveReload = (html) => {
 
 app.get("/:template", (req, res) => {
   try {
-    const mailTemplatePath = `${mailerTemplatesDir}/${req.params.template}`
+    const mailTemplatePath = `${mailerTemplatesDir}/${req.params.template}`;
     const templateFunction = reRequire(mailTemplatePath);
-    const emailHtml = mjmlTranslator(templateFunction(req.query));
+    const emailHtml = mjmlTranslator(templateFunction(req.query).mjml);
 
     res.status(200).send(injectLiveReload(emailHtml));
   } catch {
     res.status(404).send();
   }
 })
-
 
 app.listen(port, () => {
   console.log(`running on port ${port}`);
