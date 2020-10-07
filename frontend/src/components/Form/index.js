@@ -8,6 +8,8 @@ const submissionHandler = (event, action, method, setFormSubmitted) => {
   const HTMLForm = event.target;
   const form = new FormData(HTMLForm);
 
+  setFormSubmitted("loading");
+
   fetch(action, {
     method: method,
     body: form,
@@ -19,10 +21,18 @@ const submissionHandler = (event, action, method, setFormSubmitted) => {
   });
 };
 
+const FormWrapper = styled.form`
+  display: flex;
+  flex-direction: column;
+  > * {
+    margin: .5em 0;
+  }
+`;
+
 function Form(props) {
   const [formSubmitted, setFormSubmitted] = useState(false);
 
-  if (formSubmitted)
+  if (formSubmitted && formSubmitted != "loading")
     return (
       <>
         <Typography>{props.formMessageObject[formSubmitted]}</Typography>
@@ -32,14 +42,16 @@ function Form(props) {
       </>
     );
 
+  if (formSubmitted === "loading") return (<Typography>Sending...</Typography>)
+
   return (
-    <form
+    <FormWrapper
       onSubmit={(event) =>
         submissionHandler(event, props.action, props.method, setFormSubmitted)
       }
     >
       {props.children}
-    </form>
+    </FormWrapper>
   );
 }
 

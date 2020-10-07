@@ -5,7 +5,7 @@ import {
   screen,
   render,
   waitFor,
-  waitForElementToBeRemoved,
+  waitForElementToBeRemoved
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import Form from "./";
@@ -49,11 +49,13 @@ describe("tests in a successful state", () => {
   
     userEvent.type(inputTextbox, "My Cool Name");
     userEvent.click(submitButton);
-  
-    await waitForElementToBeRemoved(() => screen.queryByRole("textbox"));
+
+    await screen.findByText("Sending...");
   
     expect(inputTextbox).not.toBeInTheDocument();
     expect(submitButton).not.toBeInTheDocument();
+    
+    await screen.findByText("Form submitted");
   });
 
   test("does not display a reset button after a successful submission", async () => {

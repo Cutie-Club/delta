@@ -9,7 +9,7 @@ async function init() {
   const transporterConfig = {
     "host": process.env.MAIL_HOST,
     "port": process.env.MAIL_PORT,
-    "secure": true,
+    "secure": false,
     "auth": {
       "user": process.env.MAIL_USER,
       "pass": process.env.MAIL_PASS
