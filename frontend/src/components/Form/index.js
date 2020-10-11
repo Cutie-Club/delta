@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-
+import Loader from "../Loader";
 import Typography from '../Typography';
 
 const submissionHandler = (event, action, method, setFormSubmitted) => {
@@ -32,7 +32,7 @@ const FormWrapper = styled.form`
 function Form(props) {
   const [formSubmitted, setFormSubmitted] = useState(false);
 
-  if (formSubmitted && formSubmitted != "loading")
+  if (formSubmitted && formSubmitted !== "loading")
     return (
       <>
         <Typography>{props.formMessageObject[formSubmitted]}</Typography>
@@ -42,7 +42,7 @@ function Form(props) {
       </>
     );
 
-  if (formSubmitted === "loading") return (<Typography>Sending...</Typography>)
+  if (formSubmitted === "loading") return (<Loader/>)
 
   return (
     <FormWrapper

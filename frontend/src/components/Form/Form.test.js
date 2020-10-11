@@ -49,8 +49,6 @@ describe("tests in a successful state", () => {
   
     userEvent.type(inputTextbox, "My Cool Name");
     userEvent.click(submitButton);
-
-    await screen.findByText("Sending...");
   
     expect(inputTextbox).not.toBeInTheDocument();
     expect(submitButton).not.toBeInTheDocument();
