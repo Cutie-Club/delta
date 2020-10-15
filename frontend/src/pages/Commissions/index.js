@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Form from "../../components/Form";
 import Typography from "../../components/Typography";
 import Input from "../../components/Input";
+import Notification from "../../components/Notification";
 
 const Wrapper = styled.section`
   max-width: 80ch;
@@ -16,8 +17,14 @@ const Button = styled.button`
   margin: 1em 0em;
 `;
 
+const notificationContent = {
+  success: "We got it! We'll get back to you soon.",
+  failure: "We ran into a problem!"
+}
+
 function Commissions(props) {
   const [formActive, setFormActive] = useState(false);
+  const [notifState, setNotifState] = useState();
 
   return (
     <Wrapper>
@@ -36,15 +43,31 @@ function Commissions(props) {
         for production. PCBs can be ordered through us, with an in-house
         assembly service for prototyping.
       </Typography>
-      <Button onClick={() => setFormActive(true)}>Get a Commission</Button>
-      {formActive && (
-        <Form method="POST" action="http://localhost:3001/commissions">
-          <Input label="Your name" name="name" required={true}/>
-          <Input label="Your email" name="email" type="email" required={true}/>
-          <Input label="Your message" type="text" required={true}/>
-          <button>Submit</button>
-        </Form>
-      )}
+
+      { notifState && <Notification status={notifState}>{notificationContent[notifState]}</Notification> }
+
+      {
+        formActive ? (
+          <Form
+            method="POST"
+            action="http://localhost:3001/commissions"
+            onStateChange={(formState) => {
+              if (formState !== "loading") {
+                setFormActive(false);
+                setNotifState(formState);
+              }
+            }}
+          >
+            <Input label="Your name" name="name" required={true} />
+            <Input label="Your email" name="email" type="email" required={true} />
+            <Input label="Your message" type="text" required={true} />
+            <button>Submit</button>
+          </Form>
+        ) : (
+          <Button onClick={() => setFormActive(true)}>Get a Commission</Button>
+        )
+      }
+
     </Wrapper>
   );
 }

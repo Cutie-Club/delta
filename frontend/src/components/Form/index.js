@@ -1,25 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Loader from "../Loader";
-import Typography from '../Typography';
-
-const submissionHandler = (event, action, method, setFormSubmitted) => {
-  event.preventDefault();
-  const HTMLForm = event.target;
-  const form = new FormData(HTMLForm);
-
-  setFormSubmitted("loading");
-
-  fetch(action, {
-    method: method,
-    body: form,
-  }).then((res) => {
-    if (res.status === 200) return setFormSubmitted("success");
-    setFormSubmitted("failure");
-  }).catch(() => {
-    setFormSubmitted("failure");
-  });
-};
 
 const FormWrapper = styled.form`
   display: flex;
@@ -29,37 +10,49 @@ const FormWrapper = styled.form`
   }
 `;
 
+const submissionHandler = async (event, action, method, setFormState) => {
+  event.preventDefault();
+  const HTMLForm = event.target;
+  const form = new FormData(HTMLForm);
+
+  setFormState("loading");
+
+  try {
+    const response = await fetch(action, {
+      method: method,
+      body: form,
+    })
+
+    if (response.status === 200) {
+      setFormState("success");
+    } else {
+      setFormState("failure");
+    }
+  } catch {
+    setFormState("failure");
+  }
+};
+
 function Form(props) {
-  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [formState, setFormState] = useState();
+  const { onStateChange } = props;
 
-  if (formSubmitted && formSubmitted !== "loading")
-    return (
-      <>
-        <Typography>{props.formMessageObject[formSubmitted]}</Typography>
-        {formSubmitted === "failure" ? (
-          <button onClick={() => setFormSubmitted(false)}>Reset</button>
-        ) : undefined}
-      </>
-    );
+  useEffect(() => {
+    if (!onStateChange || !formState) return;
+    onStateChange(formState);
+  }, [formState, onStateChange])
 
-  if (formSubmitted === "loading") return (<Loader/>)
+  if (formState === "loading") return (<Loader />)
 
   return (
     <FormWrapper
       onSubmit={(event) =>
-        submissionHandler(event, props.action, props.method, setFormSubmitted)
+        submissionHandler(event, props.action, props.method, setFormState)
       }
     >
       {props.children}
     </FormWrapper>
   );
-}
-
-Form.defaultProps = {
-  "formMessageObject" : {
-    "success": "Form submitted",
-    "failure": "Form did not submit"
-  }
 }
 
 export default Form;
