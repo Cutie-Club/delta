@@ -1,6 +1,8 @@
 const express = require("express");
+const { body, validationResult } = require("express-validator");
 const multer = require("multer");
 const cors = require("cors");
+
 const { translateEmail, sendEmail } = require("./mailer");
 const clientConfirmation = require("./mailer/mailTemplates/clientConfirmation");
 const internalConfirmation = require("./mailer/mailTemplates/internalConfirmation");
@@ -14,12 +16,31 @@ app.use(cors());
 
 app.get("/test", (req, res) => {
   res.status(200).send("Hello World");
-})
+});
 
-app.post("/commissions", upload.none(), (req, res) => {
-  if (!req.body) return res.status(400).end();
+app.post("/commissions", upload.none(), [
+  body('name')
+    .trim()
+    .escape()
+    .notEmpty(),
+  body('email')
+    .isEmail()
+    .normalizeEmail()
+    .notEmpty(),
+  body('message')
+    .trim()
+    .stripLow(false)
+    .escape()
+    .notEmpty()
+], (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
 
-  // sanitise form data
+  if (Object.keys(req.body).length > 3) {
+    return res.status(400).end();
+  }
 
   try {
     // build internal commission email

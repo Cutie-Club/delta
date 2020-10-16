@@ -60,7 +60,7 @@ function Commissions(props) {
           >
             <Input label="Your name" name="name" required={true} />
             <Input label="Your email" name="email" type="email" required={true} />
-            <Input label="Your message" type="text" required={true} />
+            <Input label="Your message" name="message" type="text" required={true} />
             <button>Submit</button>
           </Form>
         ) : (

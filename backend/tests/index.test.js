@@ -28,7 +28,7 @@ describe("tests on /commissions route", () => {
     request(app)
       .post('/commissions')
       .field("name", "Oscar")
-      .field("mail", "meow@cats.com")
+      .field("email", "meow@cats.com")
       .field("message", "meow")
       .expect(200)
       .end(done)
@@ -38,7 +38,7 @@ describe("tests on /commissions route", () => {
     request(app)
       .post('/commissions')
       .field("name", "Oscar")
-      .field("mail", "meow@cats.com")
+      .field("email", "meow@cats.com")
       .field("message", "meow")
       .expect(200)
       .expect(() => expect(mailer.sendEmail).toHaveBeenCalledTimes(2))
@@ -58,10 +58,103 @@ describe("tests on /commissions route", () => {
     request(app)
       .post('/commissions')
       .field("name", "Oscar")
-      .field("mail", "meow@cats.com")
+      .field("email", "meow@cats.com")
       .field("message", "meow")
       .expect(() => expect(emailSent).toBe(true))
       .end(done)
   });
 
+  function checkBasicValidation(route, testCases) {
+    testCases.forEach(testParams => {
+      test(testParams.testName, (done) => {
+        const req = request(app).post(route);
+        Object.entries(testParams).forEach(([key, value]) => {
+          if (key !== testParams.testName) req.field(key, value);
+        });
+        req.expect(400).end(done);
+      })
+    })
+  }
+
+  describe("form validation tests", () => {
+    const nameFieldTests = [
+      {
+        testName: "name field is not supplied",
+        email: "meow@cats.com",
+        message: "meow"
+      },
+      {
+        testName: "name field is not an empty string",
+        name: "",
+        email: "meow@cats.com",
+        message: "meow"
+      },
+      {
+        testName: "name field is not a whitespace string",
+        name: "          ",
+        email: "meow@cats.com",
+        message: "meow"
+      }
+    ];
+    checkBasicValidation("/commissions", nameFieldTests);
+
+    const emailFieldTests = [
+      {
+        testName: "email field is not supplied",
+        name: "Oscar",
+        message: "meow"
+      },
+      {
+        testName: "email field is not an empty string",
+        name: "Oscar",
+        email: "",
+        message: "meow"
+      },
+      {
+        testName: "email field is not an empty string",
+        name: "Oscar",
+        email: "          ",
+        message: "meow"
+      },
+      {
+        testName: "email field is not a regular string",
+        name: "Oscar",
+        email: "NotAnEmail",
+        message: "meow"
+      }
+    ]
+    checkBasicValidation("/commissions", emailFieldTests);
+
+    const messageFieldTests = [
+      {
+        testName: "message field is not supplied",
+        name: "Oscar",
+        email: "meow@cats.com",
+      },
+      {
+        testName: "message field is not an empty string",
+        name: "Oscar",
+        email: "meow@cats.com",
+        message: ""
+      },
+      {
+        testName: "message field is not a whitespace string",
+        name: "Oscar",
+        email: "meow@cats.com",
+        message: "          "
+      }
+    ]
+    checkBasicValidation("/commissions", messageFieldTests);
+    
+    test("rejects with more than 3 fields", (done) => {
+      request(app)
+      .post('/commissions')
+      .field("name", "Oscar")
+      .field("email", "meow@cats.com")
+      .field("message", "meow")
+      .field("extraField", "illegalField")
+      .expect(400)
+      .end(done)
+    })
+  });
 });
