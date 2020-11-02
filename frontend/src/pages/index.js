@@ -31,6 +31,7 @@ const pages = [
     icon: BiEnvelope
   },
   {
+    route: "/:page*",
     hidden: true,
     component: Error
   }

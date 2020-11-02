@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Switch,
-  Route,
-} from 'wouter';
+import { Switch, Route } from 'wouter';
 
 import './App.scss';
 import styled, { ThemeProvider } from 'styled-components';
@@ -32,7 +29,6 @@ const AppWrapper = styled.div`
 `;
 
 function App() {
-
   const [theme, setTheme] = useState('light');
 
   useEffect(() => {
@@ -48,13 +44,18 @@ function App() {
         <AppWrapper>
           <CCLogo />
           <Menu />
-
+          
           <Switch>
-            {pages.map((page, index) => (
-              <Route path={page.route} key={index}>
-                {page.component}
-              </Route>
-            ))}
+            {pages.map((page, index) => {
+              return (
+                <Route path={page.route} key={index}>
+                  {params => {
+                    document.title = `${page.name ? page.name + " | " : ""}Cutie Club`;
+                    return <page.component params={params} />
+                  }}
+                </Route>
+              )
+            })}
           </Switch>
 
           <Footer
